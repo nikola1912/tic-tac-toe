@@ -1,0 +1,31 @@
+body {
+    font-family: monospace;
+    font-size: 50px;
+}
+
+#gameBody {
+    width: 100%;
+}
+
+#game {
+    display: grid;
+    grid-template: repeat(3, 110px)/repeat(3, 110px);
+    margin: 0 auto;
+}
+
+.cell {
+    cursor: default; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.middleRow {
+    border-top: 2px solid rgb(0, 0, 0);
+    border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.middleColumn {
+    border-left: 2px solid rgb(0, 0, 0);
+    border-right: 2px solid rgb(0, 0, 0);
+}
