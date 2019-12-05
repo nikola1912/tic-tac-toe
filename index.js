@@ -1,7 +1,7 @@
 const gameBoard = (function() {
     
-    let board = ["1","2","3","4","5","6","7","8","9"];
-    //let board = ["","","","","","","","",""];
+    //let board = ["1","2","3","4","5","6","7","8","9"];
+    let board = ["","","","","","","","",""];
     let _currentPlayer = "&#10005;";
     let _Xmarker = "&#10005;";
     let _Omarker = "&#9711;";
@@ -31,34 +31,38 @@ const gameBoard = (function() {
         return board.every(cell => cell != "");
     };
 
-    const _isMarkerThirdInRow = (cell, marker) => {
+    const _checkClass = (cell, marker, cellClass) => {
+        // Checks if markers are the same in the given class(row, column, diagonal)
+        let markerHTMLsign = _getMarkerValue(marker); // "✕" or "◯"
+        let cellsInClass = document.getElementsByClassName(cell.classList[cellClass]);
+        for (let cell of cellsInClass) {
+            if (cell.innerHTML != markerHTMLsign) {return false;}
+        }
+        console.log(`Player ${markerHTMLsign} WINS!`);
+        return true;
+    };
+
+    const _checkRow = (cell, marker) => {
         // Checks if the given cells row is filled with the same marker
-        let markerHTMLsign = _getMarkerValue(marker); // "✕" or "◯"
-        let cellsInSameRow = document.getElementsByClassName(cell.classList[1]);
-        for (let cell of cellsInSameRow) {
-            if (cell.innerHTML != markerHTMLsign) {return false;}
+        return _checkClass(cell, marker, 1);
+    };
+
+    const _checkColumn = (cell, marker) => {
+        // Checks if the given cells column is filled with the same marker
+        return _checkClass(cell, marker, 2);
+    };
+
+    const _checkDiagonal = (cell, marker) => {
+        // Checks if the given cells diagonal is filled with the same marker
+        if (Number(cell.id) % 2 == 0) { //Only check diagonals if the given cell is in a corner or the center;
+            // For the center cell(id=4) both first and second diagonal have to be checked
+            return cell.id != 4 ? _checkClass(cell, marker, 3) : _checkClass(cell, marker, 3) || _checkClass(cell, marker, 4);
         }
-        console.log(`Player ${markerHTMLsign} WINS!`);
-        return true;
-    }
-
-    const _isMarkerThirdInColumn = (cell, marker) => {
-        let markerHTMLsign = _getMarkerValue(marker); // "✕" or "◯"
-        let cellsInSameColumn = document.getElementsByClassName(cell.classList[2]);
-        for (let cell of cellsInSameColumn) {
-            if (cell.innerHTML != markerHTMLsign) {return false;}
-        }
-        console.log(`Player ${markerHTMLsign} WINS!`);
-        return true;
-    }
-
-    const _isMarkerThirdInDiagonal = (cell, marker) => {
-
     };
 
     const _isMoveWinner = (cell, marker) => {
         // Checks if the cell is connected by: row, column or diagonal, with 2 cells that have the same marker
-        return _isMarkerThirdInRow(cell, marker) || _isMarkerThirdInColumn(cell, marker) || _isMarkerThirdInDiagonal(cell, marker);
+        return _checkRow(cell, marker) || _checkColumn(cell, marker) || _checkDiagonal(cell, marker);
     }
 
     const _isGameOver = (cell, marker) => {
