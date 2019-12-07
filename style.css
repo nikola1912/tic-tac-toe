@@ -13,12 +13,8 @@ body {
     color: red;
 }
 
-.cellWinnerX {
-    background-color: rgb(230, 200, 200);
-}
-
-.cellWinnerY {
-    background-color: rgb(255, 255, 255);
+.cellWinner {
+    background-color: rgba(0, 252, 0, 0.616);
 }
 
 #gameWraper {
@@ -60,6 +56,10 @@ body {
     align-items: center;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+.cellPaused {
+    cursor: default; 
 }
 
 .middleRow {

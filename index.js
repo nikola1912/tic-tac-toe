@@ -2,6 +2,7 @@ const gameBoard = (function() {
     
     //let board = ["1","2","3","4","5","6","7","8","9"];
     let board = ["","","","","","","","",""];
+    let _gameState = "unpaused";
     let _currentPlayer = "&#10005;";
     let _Xmarker = "&#10005;";
     let _Omarker = "&#9711;";
@@ -31,9 +32,26 @@ const gameBoard = (function() {
         return board.every(cell => cell != "");
     };
 
+    const _unpauseGame = () => {
+        // Reapplies event listeners if the game is paused toggles games state and cursor for cells
+        if (_gameState == "paused") {
+            document.getElementById("game").addEventListener("click", handlePlayerInput);
+            _gameState = "unpaused";
+            displayController.toggleCellCursor();
+        }
+    };
+
+    const _pauseGame = () => {
+        // Removes event listeners for when the game is in pause mode and toggles games state and cursor for cells
+        document.getElementById("game").removeEventListener("click", handlePlayerInput);
+        _gameState = "paused";
+        displayController.toggleCellCursor();
+    };
+
     const _handleWinnerMove = (winnerClass, marker) => {
-        // 
-        displayController.highlightWinnerClass(winnerClass, marker);
+        // Colors the winning class cells, pauses the game, ...
+        _pauseGame();
+        displayController.highlightWinnerClass(winnerClass);
         console.log(`Player ${_getMarkerValue(marker)} WINS!`); // "✕" or "◯"
         return true;
     };
@@ -80,6 +98,7 @@ const gameBoard = (function() {
         board.forEach((cell, index) => board[index] = "");
         displayController.removeCellMarkerColors();
         displayController.drawBoard();
+        _unpauseGame();
     };
 
     const handlePlayerInput = (event) => {
@@ -95,6 +114,7 @@ const gameBoard = (function() {
     };
 
     const applyEventListeners = () => {
+        // The only functions that is used outside of the module. It applies event listeners to buttons and the game board
         document.getElementById("game").addEventListener("click", handlePlayerInput);
         document.getElementById("restart").addEventListener("click", _handleRestartEvent);
     };
@@ -118,7 +138,7 @@ const displayController = (function() {
 
     const removeCellMarkerColors = () => {
         for (let cell of _cells) {
-            cell.classList.remove("cellColorX", "cellColorO", "cellWinnerX", "cellWinnerY");
+            cell.classList.remove("cellColorX", "cellColorO", "cellWinner");
         }
     };
 
@@ -128,18 +148,20 @@ const displayController = (function() {
         cell.innerHTML = marker;
     };
 
-    const _crossOutRow = (winnerClass) => {
-
-    };
-
-    const highlightWinnerClass = (winnerClass, marker) => {
+    const highlightWinnerClass = (winnerClass) => {
         // Highlights the winning cells
         for (let cell of winnerClass) {
-            cell.classList.add(marker == "&#10005;" ? "cellWinnerX" : "cellWinnerY");
+            cell.classList.add("cellWinner");
         }
     };
 
-    return {drawBoard, drawMarkerOnCell, highlightWinnerClass, removeCellMarkerColors};
+    const toggleCellCursor = () => {
+        for (let cell of _cells) {
+            cell.classList.toggle("cellPaused");
+        }
+    }
+
+    return {drawBoard, drawMarkerOnCell, highlightWinnerClass, removeCellMarkerColors, toggleCellCursor};
 })();
 
 
