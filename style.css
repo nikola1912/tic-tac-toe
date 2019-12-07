@@ -29,3 +29,27 @@ body {
     border-left: 2px solid rgb(0, 0, 0);
     border-right: 2px solid rgb(0, 0, 0);
 }
+
+.button {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 100px;
+    border: 0px solid #444;
+    box-shadow: 0px 1px 6px rgba(0,0,0,0.3);
+    font-size: 16px;
+}
+
+.button:hover {
+    background: rgba(0, 0, 0, 0.096);
+}
+
+.button:active {
+	position:relative;
+	top:1px;
+}
+
+.button:focus {
+    outline: 0;
+}

@@ -67,7 +67,11 @@ const gameBoard = (function() {
 
     const _isGameOver = (cell, marker) => {
         // Checks if there are 3 markers in a row or if the game is tied
-        return _isMoveWinner(cell, marker) || _isBoardFilled();
+        if (_isMoveWinner(cell, marker) || _isBoardFilled()) _handleGameOver(cell, marker);
+    };
+
+    const _handleGameOver = (cell, marker) => {
+
     };
 
     const handlePlayerInput = (event) => {
