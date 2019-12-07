@@ -1,23 +1,65 @@
 body {
+    margin: 0;
     font-family: monospace;
     font-size: 50px;
+    background-color: rgb(245, 179, 56);
+}
+
+.cellColorX {
+    color: orange;
+}
+
+.cellColorO {
+    color: red;
+}
+
+.cellWinnerX {
+    background-color: rgb(230, 200, 200);
+}
+
+.cellWinnerY {
+    background-color: rgb(255, 255, 255);
+}
+
+#gameWraper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 #gameBody {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.75);
+    border-radius: 14px;
+    background-color: rgb(255, 255, 255);
+    width: 800px;
+    height: 610px;
 }
 
 #game {
     display: grid;
     grid-template: repeat(3, 110px)/repeat(3, 110px);
-    margin: 0 auto;
+    background-color: rgb(255, 255, 255);
+    border: 0px solid black;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+#buttons {
+    cursor: default;
 }
 
 .cell {
-    cursor: default; 
+    cursor: pointer; 
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .middleRow {
@@ -31,18 +73,19 @@ body {
 }
 
 .button {
-    width: 44px;
-    height: 44px;
+    width: 54px;
+    height: 54px;
     cursor: pointer;
-    background: #fff;
+    background: orange;
+    color: white;
     border-radius: 100px;
     border: 0px solid #444;
     box-shadow: 0px 1px 6px rgba(0,0,0,0.3);
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .button:hover {
-    background: rgba(0, 0, 0, 0.096);
+    background: rgb(248, 191, 84);
 }
 
 .button:active {

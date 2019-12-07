@@ -10,22 +10,26 @@
 </head>
     <body>
 
-        <div id="gameBody">
-            <div id="game">
-                <div id="0" class="cell topRow leftColumn firstDiagonal">X</div>
-                <div id="1" class="cell topRow middleColumn">X</div>
-                <div id="2" class="cell topRow rightColumn secondDiagonal">X</div>
+        <div id="gameWraper">
+            <div id="gameBody">
+                <div id="game">
+                    <div id="0" class="cell topRow leftColumn firstDiagonal">X</div>
+                    <div id="1" class="cell topRow middleColumn">X</div>
+                    <div id="2" class="cell topRow rightColumn secondDiagonal">X</div>
+                        
+                    <div id="3" class="cell middleRow leftColumn">&#10005;</div>
+                    <div id="4" class="cell middleRow middleColumn firstDiagonal secondDiagonal">&#10005;</div>
+                    <div id="5" class="cell middleRow rightColumn">&#10005;</div>
+                    
+                    <div id="6" class="cell bottomRow leftColumn secondDiagonal">&#9711;</div>
+                    <div id="7" class="cell bottomRow middleColumn">&#9711;</div>
+                    <div id="8" class="cell bottomRow rightColumn firstDiagonal">&#9711;</div>
+                </div>
 
-                <div id="3" class="cell middleRow leftColumn">&#10005;</div>
-                <div id="4" class="cell middleRow middleColumn firstDiagonal secondDiagonal">&#10005;</div>
-                <div id="5" class="cell middleRow rightColumn">&#10005;</div>
-
-                <div id="6" class="cell bottomRow leftColumn secondDiagonal">&#9711;</div>
-                <div id="7" class="cell bottomRow middleColumn">&#9711;</div>
-                <div id="8" class="cell bottomRow rightColumn firstDiagonal">&#9711;</div>
-            </div>
-            <div>
-                <button class="button"><i class="fas fa-redo"></i></button>
+                <div id="buttons">
+                    <button id="home" class="button"><i class="fas fa-home"></i></button>
+                    <button id="restart" class="button"><i class="fas fa-redo"></i></button>
+                </div>
             </div>
         </div>
         

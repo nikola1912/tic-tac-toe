@@ -31,15 +31,20 @@ const gameBoard = (function() {
         return board.every(cell => cell != "");
     };
 
+    const _handleWinnerMove = (winnerClass, marker) => {
+        // 
+        displayController.highlightWinnerClass(winnerClass, marker);
+        console.log(`Player ${_getMarkerValue(marker)} WINS!`); // "✕" or "◯"
+        return true;
+    };
+
     const _checkClass = (cell, marker, cellClass) => {
         // Checks if markers are the same in the given class(row, column, diagonal)
-        let markerHTMLsign = _getMarkerValue(marker); // "✕" or "◯"
         let cellsInClass = document.getElementsByClassName(cell.classList[cellClass]);
         for (let cell of cellsInClass) {
-            if (cell.innerHTML != markerHTMLsign) {return false;}
+            if (cell.innerHTML != _getMarkerValue(marker)) {return false;}
         }
-        console.log(`Player ${markerHTMLsign} WINS!`);
-        return true;
+        return _handleWinnerMove(cellsInClass, marker);
     };
 
     const _checkRow = (cell, marker) => {
@@ -67,17 +72,20 @@ const gameBoard = (function() {
 
     const _isGameOver = (cell, marker) => {
         // Checks if there are 3 markers in a row or if the game is tied
-        if (_isMoveWinner(cell, marker) || _isBoardFilled()) _handleGameOver(cell, marker);
+        return _isMoveWinner(cell, marker) || _isBoardFilled(); // If _isMoveWinner() == true then the _isBoardFilled() functions won't execute
     };
 
-    const _handleGameOver = (cell, marker) => {
-
+    const _handleRestartEvent = () => {
+        // Sets all the 'board' array elements to empty strings and draws them in the table
+        board.forEach((cell, index) => board[index] = "");
+        displayController.removeCellMarkerColors();
+        displayController.drawBoard();
     };
 
     const handlePlayerInput = (event) => {
         // Draws marker on current cell if it's empty and switches the current player, then checks if the game is over
         let cell = event.target; // The cell that was clicked on
-        if (_isCellEmpty(cell)) {
+        if (_isCellEmpty(cell) && cell.id != "game") {
             displayController.drawMarkerOnCell(cell, _currentPlayer);
             _fillBoardWithMarker(_currentPlayer, Number(cell.id));
             _isGameOver(cell, _currentPlayer);
@@ -86,7 +94,12 @@ const gameBoard = (function() {
         console.log(event);
     };
 
-    return {handlePlayerInput, board};
+    const applyEventListeners = () => {
+        document.getElementById("game").addEventListener("click", handlePlayerInput);
+        document.getElementById("restart").addEventListener("click", _handleRestartEvent);
+    };
+
+    return {applyEventListeners, board};
 })();
 
 
@@ -103,12 +116,30 @@ const displayController = (function() {
         }
     };
 
+    const removeCellMarkerColors = () => {
+        for (let cell of _cells) {
+            cell.classList.remove("cellColorX", "cellColorO", "cellWinnerX", "cellWinnerY");
+        }
+    };
+
     const drawMarkerOnCell = (cell, marker) => {
         // Draws the given marker to a given cell
+        cell.classList.add(marker == "&#10005;" ? "cellColorX" : "cellColorO");
         cell.innerHTML = marker;
     };
 
-    return {drawBoard, drawMarkerOnCell};
+    const _crossOutRow = (winnerClass) => {
+
+    };
+
+    const highlightWinnerClass = (winnerClass, marker) => {
+        // Highlights the winning cells
+        for (let cell of winnerClass) {
+            cell.classList.add(marker == "&#10005;" ? "cellWinnerX" : "cellWinnerY");
+        }
+    };
+
+    return {drawBoard, drawMarkerOnCell, highlightWinnerClass, removeCellMarkerColors};
 })();
 
 
@@ -121,5 +152,6 @@ const player = (marker) => {
 let playerX = player("&#10005;");
 let playerO = player("&#9711;");
 
-document.getElementById("game").addEventListener("click", gameBoard.handlePlayerInput);
+//document.getElementById("game").addEventListener("click", gameBoard.handlePlayerInput);
+gameBoard.applyEventListeners();
 displayController.drawBoard();
