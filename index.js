@@ -35,6 +35,8 @@ const gameBoard = (function() {
     const _unpauseGame = () => {
         // Reapplies event listeners if the game is paused toggles games state and cursor for cells
         if (_gameState == "paused") {
+            document.getElementById("game").addEventListener("mouseover", handleMouseOver);
+            document.getElementById("game").addEventListener("mouseout", handleMouseOut);
             document.getElementById("game").addEventListener("click", handlePlayerInput);
             _gameState = "unpaused";
             displayController.toggleCellCursor();
@@ -44,6 +46,8 @@ const gameBoard = (function() {
     const _pauseGame = () => {
         // Removes event listeners for when the game is in pause mode and toggles games state and cursor for cells
         document.getElementById("game").removeEventListener("click", handlePlayerInput);
+        document.getElementById("game").removeEventListener("mouseover", handleMouseOver);
+        document.getElementById("game").removeEventListener("mouseout", handleMouseOut);
         _gameState = "paused";
         displayController.toggleCellCursor();
     };
@@ -101,9 +105,24 @@ const gameBoard = (function() {
         _unpauseGame();
     };
 
+    const handleMouseOver = (event) => {
+        // When mouse hovers over the cell, if the cell is empty, hover(draw) current player marker on it
+        let cell = event.target;
+        if (_isCellEmpty(cell))
+            displayController.hoverMarkerOnCell(cell, _currentPlayer);
+        console.log(event);
+    }
+
+    const handleMouseOut = (event) => {
+        // Erases the hover marker from the cell when the mouse moves outside of the hovered cell
+        let cell = event.target;
+        displayController.removeHoverMarker(cell, _currentPlayer);
+    }
+
     const handlePlayerInput = (event) => {
         // Draws marker on current cell if it's empty and switches the current player, then checks if the game is over
         let cell = event.target; // The cell that was clicked on
+        displayController.removeHoverMarker(cell, _currentPlayer);
         if (_isCellEmpty(cell) && cell.id != "game") {
             displayController.drawMarkerOnCell(cell, _currentPlayer);
             _fillBoardWithMarker(_currentPlayer, Number(cell.id));
@@ -115,6 +134,8 @@ const gameBoard = (function() {
 
     const applyEventListeners = () => {
         // The only functions that is used outside of the module. It applies event listeners to buttons and the game board
+        document.getElementById("game").addEventListener("mouseover", handleMouseOver);
+        document.getElementById("game").addEventListener("mouseout", handleMouseOut);
         document.getElementById("game").addEventListener("click", handlePlayerInput);
         document.getElementById("restart").addEventListener("click", _handleRestartEvent);
     };
@@ -122,7 +143,7 @@ const gameBoard = (function() {
     return {applyEventListeners, board};
 })();
 
-
+/*-------------------------------------------------------------------------------------------------------------------*/
 
 const displayController = (function() {
 
@@ -137,6 +158,7 @@ const displayController = (function() {
     };
 
     const removeCellMarkerColors = () => {
+        // Erases all markers from the board
         for (let cell of _cells) {
             cell.classList.remove("cellColorX", "cellColorO", "cellWinner");
         }
@@ -159,12 +181,34 @@ const displayController = (function() {
         for (let cell of _cells) {
             cell.classList.toggle("cellPaused");
         }
-    }
+    };
 
-    return {drawBoard, drawMarkerOnCell, highlightWinnerClass, removeCellMarkerColors, toggleCellCursor};
+    const hoverMarkerOnCell = (cell, marker) => {
+        // Draws a low opacity current player marker on hovered cell
+        cell.classList.add(marker == "&#10005;" ? "cellHoverX" : "cellHoverO");
+        cell.innerHTML = marker;
+    };
+
+    const removeHoverMarker = (cell, marker) => {
+        // Erase the hover marker from the cell if the cell is hovered
+        let cellClassList = [...cell.classList];
+        if (cellClassList.includes("cellHoverX") || cellClassList.includes("cellHoverO")) {
+            cell.classList.remove("cellHoverX", "cellHoverO");
+            cell.innerHTML = "";
+        }
+    };
+
+    return {drawBoard,
+        drawMarkerOnCell,
+        highlightWinnerClass, 
+        removeCellMarkerColors, 
+        toggleCellCursor,
+        hoverMarkerOnCell,
+        removeHoverMarker
+    };
 })();
 
-
+/*-------------------------------------------------------------------------------------------------------------------*/
 
 const player = (marker) => {
 
@@ -174,6 +218,5 @@ const player = (marker) => {
 let playerX = player("&#10005;");
 let playerO = player("&#9711;");
 
-//document.getElementById("game").addEventListener("click", gameBoard.handlePlayerInput);
 gameBoard.applyEventListeners();
 displayController.drawBoard();
