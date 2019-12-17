@@ -25,6 +25,8 @@ body {
     background-color: rgba(0, 252, 0, 0.616);
 }
 
+/* -------------------------------------------------------------------------------------------- */
+
 #gameWraper {
     display: flex;
     justify-content: center;
@@ -37,7 +39,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    justify-content: space-evenly;
     box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.75);
     border-radius: 14px;
     background-color: rgb(255, 255, 255);
@@ -45,19 +46,132 @@ body {
     height: 610px;
 }
 
+/* -------------------------------------------------------------------------------------------- */
+
+#mainMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#gameTitle {
+    text-align: center;
+    font-family: 'Trebuchet MS', Calibri, sans-serif;
+}
+
+#mainMenuForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.playerInputField {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 35px;
+}
+
+.playerInputField input {
+    font-family: 'Trebuchet MS', Calibri, sans-serif;
+    font-size: 0.5em;
+    width: 150%;
+    margin-top: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.playerInputField input:focus {
+    outline: 0;
+}
+
+.playerInputField label {
+    text-align: center;
+    width: 70%;
+}
+
+.playerInputField:nth-child(1) label {
+    color: orange;
+}
+
+.playerInputField:nth-child(2) label {
+    color: red;
+}
+
+#startGame {
+    margin-top: 40px;
+    font-size: 1em;
+    border-radius: 38px;
+    width: 50%;
+    height: 20%;
+}
+
+/* -------------------------------------------------------------------------------------------- */
+
+#gameMenu {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+/* -------------------------------------------------------------------------------------------- */
+
+#gameScore {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-family: sans-serif;
+}
+
+#gameScore .playerStatus {
+    color: #0c5460;
+    background-color: #fff;
+    margin-right: 10px;
+    width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    padding: .1rem .25rem;
+    border: 2px solid orange; 
+}
+
+#gameScore .tieStatus {
+    font-family: 'Trebuchet MS', Calibri, sans-serif;
+    border-radius: 10px;
+    background: orange;
+    color: #fff;
+    padding: 5px 8px;
+    text-align: center;
+    font-size: 0.6em;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-right: 10px;
+}
+
+#gameScore .scoreCount {
+    font-family: 'Trebuchet MS', Calibri, sans-serif;
+    float: right;
+    color: rgba(12,84,96,.54);
+    font-weight: bold;
+}
+
+#gameScore .tieCount {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* -------------------------------------------------------------------------------------------- */
+
 #game {
     display: grid;
     grid-template: repeat(3, 110px)/repeat(3, 110px);
-    background-color: rgb(255, 255, 255);
-    border: 0px solid black;
-    margin-top: 20px; 
-}
-
-#buttons {
-    cursor: default;
-    display: flex;
-    justify-content: space-around;
-    width: 150px;
 }
 
 .cell {
@@ -83,6 +197,15 @@ body {
     border-right: 2px solid rgb(0, 0, 0);
 }
 
+/* -------------------------------------------------------------------------------------------- */
+
+#buttons {
+    cursor: default;
+    display: flex;
+    justify-content: space-around;
+    width: 150px;
+}
+
 .button {
     width: 54px;
     height: 54px;
@@ -100,10 +223,12 @@ body {
 }
 
 .button:active {
-	position:relative;
+    position:relative;
 	top:1px;
 }
 
 .button:focus {
     outline: 0;
 }
+
+/* -------------------------------------------------------------------------------------------- */

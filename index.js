@@ -105,6 +105,12 @@ const gameBoard = (function() {
         _unpauseGame();
     };
 
+    const _handleHomeEvent = () => {
+        // Erases all current game states and switches to main menu
+        _handleRestartEvent();
+        mainMenu.switchMenus();
+    };
+
     const handleMouseOver = (event) => {
         // When mouse hovers over the cell, if the cell is empty, hover(draw) current player marker on it
         let cell = event.target;
@@ -137,6 +143,7 @@ const gameBoard = (function() {
         document.getElementById("game").addEventListener("mouseover", handleMouseOver);
         document.getElementById("game").addEventListener("mouseout", handleMouseOut);
         document.getElementById("game").addEventListener("click", handlePlayerInput);
+        document.getElementById("home").addEventListener("click", _handleHomeEvent);
         document.getElementById("restart").addEventListener("click", _handleRestartEvent);
     };
 
@@ -210,13 +217,48 @@ const displayController = (function() {
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 
-const player = (marker) => {
+const mainMenu = (function() {
+    let playerX, playerO;
 
-    return {marker};
+    const switchMenus = () => {
+        // Toggles between main menu and game menu
+        let mainMenuDisplay = window.getComputedStyle(document.getElementById("mainMenu")).getPropertyValue("display");
+        let gameMenuDisplay = window.getComputedStyle(document.getElementById("gameMenu")).getPropertyValue("display");
+        document.getElementById("mainMenu").style.display = mainMenuDisplay == "none" ? "flex" : "none";
+        document.getElementById("gameMenu").style.display = gameMenuDisplay == "none" ? "flex" : "none";
+        console.log("GAME START!");
+    };
+
+    const _createPlayerObjects = () => {
+        // Create player objects with names from input fields
+        let playerOneName = document.getElementById("playerOne").value;
+        let playerTwoName = document.getElementById("playerTwo").value;
+        playerX = player(playerOneName);
+        playerO = player(playerTwoName);
+    };
+
+    const _handleGameStart = () => {
+        // Starts the game with player names from the input fields 
+        _createPlayerObjects();
+        switchMenus();
+    };
+
+    const applyEventListeners = () => {
+        // Applies event lisener to the "start game" button
+        document.getElementById("startGame").addEventListener("click", _handleGameStart);
+    };
+
+    return {
+        applyEventListeners,
+        switchMenus
+    };
+})();
+
+const player = (playerName) => {
+
+    return {playerName};
 };
 
-let playerX = player("&#10005;");
-let playerO = player("&#9711;");
-
+mainMenu.applyEventListeners();
 gameBoard.applyEventListeners();
 displayController.drawBoard();

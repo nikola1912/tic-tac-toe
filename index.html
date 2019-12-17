@@ -12,24 +12,67 @@
 
         <div id="gameWraper">
             <div id="gameBody">
-                
-                <div id="game">
-                    <div id="0" class="cell topRow leftColumn firstDiagonal">X</div>
-                    <div id="1" class="cell topRow middleColumn">X</div>
-                    <div id="2" class="cell topRow rightColumn secondDiagonal">X</div>
-                        
-                    <div id="3" class="cell middleRow leftColumn">&#10005;</div>
-                    <div id="4" class="cell middleRow middleColumn firstDiagonal secondDiagonal">&#10005;</div>
-                    <div id="5" class="cell middleRow rightColumn">&#10005;</div>
-                    
-                    <div id="6" class="cell bottomRow leftColumn secondDiagonal">&#9711;</div>
-                    <div id="7" class="cell bottomRow middleColumn">&#9711;</div>
-                    <div id="8" class="cell bottomRow rightColumn firstDiagonal">&#9711;</div>
-                </div>
+                <div id="mainMenu">
 
-                <div id="buttons">
-                    <button id="home" class="button"><i class="fas fa-home"></i></button>
-                    <button id="restart" class="button"><i class="fas fa-redo"></i></button>
+                    <div id="gameTitle">
+                        <h3>TIC TAC TOE</h3>
+                    </div>
+
+                    <form id="mainMenuForm">
+                        <div class="playerInputField">
+                            <label for="playerOne">&#10005;</label>
+                            <input type="text" placeholder="Player 1 Name" name="playerOne" id="playerOne">
+                        </div>
+                        <div class="playerInputField">
+                            <label for="playerTwo">&#9711;</label>
+                            <input type="text" placeholder="Player 2 Name" name="playerTwo" id="playerTwo">
+                        </div>
+
+                        <button id="startGame" class="button" type="button"><i class="fas fa-play"></i></button>
+                    </form>
+
+                </div>
+                <div id="gameMenu">
+
+                    <div id="gameScore">
+
+                        <div class="playerStatus">
+                            <span id="playerOneName"> P1 </span>
+                            <span id="playerOneScore" class="scoreCount"> 0 </span>
+                        </div>
+
+                        <div class="tieStatus">
+                            Ties<br>
+                            <span id="" class="tieCount">
+                                0
+                            </span>
+                        </div>
+
+                        <div class="playerStatus">
+                            <span id="playerTwoName"> P2 </span>
+                            <span id="playerTwoScore" class="scoreCount"> 0 </span>
+                        </div>
+                        
+                    </div>
+
+                    <div id="game">
+                        <div id="0" class="cell topRow leftColumn firstDiagonal">X</div>
+                        <div id="1" class="cell topRow middleColumn">X</div>
+                        <div id="2" class="cell topRow rightColumn secondDiagonal">X</div>
+                            
+                        <div id="3" class="cell middleRow leftColumn">&#10005;</div>
+                        <div id="4" class="cell middleRow middleColumn firstDiagonal secondDiagonal">&#10005;</div>
+                        <div id="5" class="cell middleRow rightColumn">&#10005;</div>
+                        
+                        <div id="6" class="cell bottomRow leftColumn secondDiagonal">&#9711;</div>
+                        <div id="7" class="cell bottomRow middleColumn">&#9711;</div>
+                        <div id="8" class="cell bottomRow rightColumn firstDiagonal">&#9711;</div>
+                    </div>
+
+                    <div id="buttons">
+                        <button id="home" class="button"><i class="fas fa-home"></i></button>
+                        <button id="restart" class="button"><i class="fas fa-redo"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
