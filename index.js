@@ -25,11 +25,16 @@ const gameBoard = (function() {
     const _getMarkerValue = (marker) => {
         // Returns given marker as string "✕" or "◯"
         return marker == _Xmarker ? "✕" : "◯";
-    }
+    };
 
     const _isBoardFilled = () => {
-        // Checks if the board is completely filled
-        return board.every(cell => cell != "");
+        // If the board is filled (game is tied), increment tie count and pause game
+        if (board.every(cell => cell != "")) {
+            _pauseGame();
+            displayController.incrementTieCount();
+        } else { 
+            return false;
+        }
     };
 
     const _unpauseGame = () => {
@@ -56,6 +61,7 @@ const gameBoard = (function() {
         // Colors the winning class cells, pauses the game, ...
         _pauseGame();
         displayController.highlightWinnerClass(winnerClass);
+        displayController.incrementWinnerScore(marker);
         console.log(`Player ${_getMarkerValue(marker)} WINS!`); // "✕" or "◯"
         return true;
     };
@@ -97,11 +103,29 @@ const gameBoard = (function() {
         return _isMoveWinner(cell, marker) || _isBoardFilled(); // If _isMoveWinner() == true then the _isBoardFilled() functions won't execute
     };
 
-    const _handleRestartEvent = () => {
+    const _restartScoreCounts = () => {
+        // Sets score counts to 0
+        displayController.emptyScoreCounts();
+    };
+
+    const _emptyAllCells = () => {
         // Sets all the 'board' array elements to empty strings and draws them in the table
         board.forEach((cell, index) => board[index] = "");
         displayController.removeCellMarkerColors();
         displayController.drawBoard();
+    };
+
+    const _handleRestartEvent = () => {
+        // Refreshes the board and score counts, sets current player as X and unpauses the game if paused
+        _emptyAllCells();
+        _restartScoreCounts();
+        _currentPlayer = "&#10005;"; // Sets the current player to X
+        _unpauseGame();
+    };
+
+    const _handleRefreshEvent = () => {
+        // Only refreshes the board and unpauses the game if paused
+        _emptyAllCells();
         _unpauseGame();
     };
 
@@ -144,6 +168,7 @@ const gameBoard = (function() {
         document.getElementById("game").addEventListener("mouseout", handleMouseOut);
         document.getElementById("game").addEventListener("click", handlePlayerInput);
         document.getElementById("home").addEventListener("click", _handleHomeEvent);
+        document.getElementById("refresh").addEventListener("click", _handleRefreshEvent);
         document.getElementById("restart").addEventListener("click", _handleRestartEvent);
     };
 
@@ -205,13 +230,43 @@ const displayController = (function() {
         }
     };
 
+    const writePlayerNames = (playerOneName, playerTwoName) => {
+        // Write given player names to the corresponding player status fields 
+        document.getElementById("playerOneName").textContent = playerOneName;
+        document.getElementById("playerTwoName").textContent = playerTwoName;
+    };
+
+    const incrementTieCount = () => {
+        // Increments tie count by 1
+        let currentTieCount = Number(document.getElementById("tieCount").textContent);
+        document.getElementById("tieCount").textContent = currentTieCount + 1;
+    };
+
+    const emptyScoreCounts = () => {
+        // Resets values of all score counts to 0
+        document.getElementById("playerOneScore").textContent = 0;
+        document.getElementById("playerTwoScore").textContent = 0;
+        document.getElementById("tieCount").textContent = 0;
+    };
+
+    const incrementWinnerScore = (winnerMarker) => {
+        // Increments winner players score by 1
+        let winner = winnerMarker == "&#10005;" ? "playerOneScore" : "playerTwoScore";
+        let currentScoreCount = Number(document.getElementById(winner).textContent);
+        document.getElementById(winner).textContent = currentScoreCount + 1;
+    };
+
     return {drawBoard,
         drawMarkerOnCell,
         highlightWinnerClass, 
         removeCellMarkerColors, 
         toggleCellCursor,
         hoverMarkerOnCell,
-        removeHoverMarker
+        removeHoverMarker,
+        writePlayerNames,
+        incrementTieCount,
+        emptyScoreCounts,
+        incrementWinnerScore
     };
 })();
 
@@ -219,6 +274,16 @@ const displayController = (function() {
 
 const mainMenu = (function() {
     let playerX, playerO;
+
+    const _setPlayerNames = () => {
+        // Grabs player names and writes them on player name panels in game menu
+        let playerOneName = document.getElementById("playerOne").value;
+        let playerTwoName = document.getElementById("playerTwo").value;
+        // If players didn't input names, set them as "P1" and "P2"
+        playerOneName = playerOneName == "" ? "P1" : playerOneName;
+        playerTwoName = playerTwoName == "" ? "P2" : playerTwoName;
+        displayController.writePlayerNames(playerOneName, playerTwoName);
+    };
 
     const switchMenus = () => {
         // Toggles between main menu and game menu
@@ -241,6 +306,7 @@ const mainMenu = (function() {
         // Starts the game with player names from the input fields 
         _createPlayerObjects();
         switchMenus();
+        _setPlayerNames();
     };
 
     const applyEventListeners = () => {

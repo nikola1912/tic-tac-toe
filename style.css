@@ -140,6 +140,7 @@ body {
     box-shadow: 0 1px 1px rgba(0,0,0,.16);
     padding: .1rem .25rem;
     border: 2px solid orange; 
+    font-size: 1em;
 }
 
 #gameScore .tieStatus {
@@ -162,7 +163,7 @@ body {
     font-weight: bold;
 }
 
-#gameScore .tieCount {
+#gameScore #tieCount {
     font-weight: bold;
     font-size: 1.2em;
 }
@@ -203,7 +204,7 @@ body {
     cursor: default;
     display: flex;
     justify-content: space-around;
-    width: 150px;
+    width: 220px;
 }
 
 .button {
